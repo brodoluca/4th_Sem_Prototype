@@ -15,7 +15,8 @@
  -	Two Raspberry Pi microcontrollers*
  -	Breadboards
  -	Four Wheels*
- -	Two Motors
+ -	Three Motors
+ - Propeller
  -	Raspberry Pi Camera
  -	LIDAR Units
  -	Digital Resources (Python, C/C++, R.O.S., Qt)
