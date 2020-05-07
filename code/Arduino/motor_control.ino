@@ -1,76 +1,85 @@
-  #include <SPI.h>
-  /* Motor Pins*/
-  #define MotorBackInput1 4
-  #define MotorBackInput2 5
-  #define MotorBackEnabler 6
-  //-------//
-  #define MotorFrontInput1 8
-  #define MotorFrontInput2 9
-  #define MotorFrontEnabler 10
-  //-------------------------//
-
-  int joyPin1 = 0;                 // slider variable connecetd to analog pin 0
-  int joyPin2 = 1; 
-
-  int value1;
-  int value2=0;
-  int SpeedTurn =230;    // Can be edited, max speed 255
+/*
+  Motor Pins:
+  #define MotorBackInput1 9
+  #define MotorBackInput2 10
+  #define MotorBackEnabler 3
+  //--------------------------//
+  #define MotorFrontInput1 5
+  #define MotorFrontInput2 6
+  #define MotorFrontEnabler 4
+*/
 
 
+#include <SPI.h>
 
+int speedDriving = 0;
+int speedTurning = 0;
 
-//DDRD = B11111110;
-
+/*
+int joyPin1 = 0;                 // slider variable connecetd to analog pin 0
+int joyPin2 = 1; 
+*/
 
 
 // Primary Initiation
 void setup() {
-  pinMode(MISO, OUTPUT);
-  pinMode(MotorBackInput1, OUTPUT);
-  pinMode(MotorBackInput2, OUTPUT);
-  pinMode(MotorBackEnabler, OUTPUT);
-  pinMode(MotorFrontInput1, OUTPUT);
- pinMode(MotorFrontInput2, OUTPUT);
-  pinMode(MotorFrontEnabler, OUTPUT);
-  pinMode(joyPin1, INPUT);
-  pinMode(joyPin2, INPUT);
-  Serial.begin(9600);
-  // turn on SPI in slave mode
-  SPCR |= _BV(SPE);
 
-  // turn on interrupts
-  SPI.attachInterrupt();
+	// Digital 0-7 are set as outputs
+	DDRD = B11111111;
+	// Digital 8-13 are set as outputs, pins 6,7 are ignored |B000000(00)|
+	DDRB = B11111111;
+	// Analog 0,1 are set as inputs, rest as outputs
+	DDRC = B11111100;
+
+	Serial.begin(9600);
+
+	// turn on SPI in slave mode
+	SPCR |= _BV(SPE);
+
+	// turn on interrupts
+	SPI.attachInterrupt();
+
+	bool g = true;
+
 }
 
-ISR (SPI_STC_vect)
-{
-  char c = SPDR;
-  value1=(int)c;
-  SPDR = c;
+
+ISR (SPI_STC_vect) {
+
+	char c = SPDR;
+	speedDriving = (int)c;
+	SPDR = c;
+
 }  // end of interrupt service routine (ISR) for SPI
-bool g=true;
+
+
 void loop() {
   
-  
-  digitalWrite (MotorBackInput1,HIGH);
- 
-  digitalWrite(MotorBackInput2,LOW);
-  analogWrite (MotorBackEnabler, 255);
-   if(g){
-      digitalWrite (MotorFrontInput1,HIGH);
-      digitalWrite(MotorFrontInput2,LOW);
-      analogWrite (MotorFrontEnabler, value1);
-   }else{
-      digitalWrite (MotorFrontInput1,LOW);
-    digitalWrite(MotorFrontInput2,HIGH);
-    analogWrite (MotorFrontEnabler, 
-    value1);
-   }
-g=!g;
-delay(1000);
+	// Power the back motors on
+	PORTB = B00001000;
+	// analogWrite works best with PWM, its execution speed wont be a handicap
+	analogWrite (MotorBackEnabler, speedDriving);
+
+	if(g){
+		// Digital port 5 is set to HIGH
+		PORTD = B00100000;
+		analogWrite (MotorFrontEnabler, speedTurning);
+	}
+
+	else{
+		// Digital port 5 is set to HIGH
+		PORTD = B01000000;
+		analogWrite (MotorFrontEnabler, speedTurning);
+	}
+
+	g=!g;
+	delay(1000);
+
 }
 
 
-int SpeedDefiner(int val){
+int SpeedDefiner(int val) {
+
   return  map(val, 0, 1023, 0, 256);
+
 }
