@@ -1,0 +1,14 @@
+write at the beginning of every python file
+#!/usr/bin/env python
+
+
+when roscd doesnt work, go to the worspace folder and do this
+source devel/setup.bash
+
+'roscore' to start every node
+'rosnode list' to check every node
+
+rosnode kill and name of the node
+
+rostopic list | grep say
+rostopic echo nome del topic (/say_hello)

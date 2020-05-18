@@ -1,0 +1,2 @@
+m2wr_description:teleop_twist_keyboard:worlds
+-DCATKIN_DEVEL_PREFIX=/home/parallels/simulation_ws/devel -DCMAKE_INSTALL_PREFIX=/home/parallels/simulation_ws/install -G Unix Makefiles

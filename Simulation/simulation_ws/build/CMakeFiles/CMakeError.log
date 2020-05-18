@@ -1,0 +1,55 @@
+Determining if the pthread_create exist failed with the following output:
+Change Dir: /home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_ddc67/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ddc67.dir/build.make CMakeFiles/cmTC_ddc67.dir/build
+make[1]: Entering directory '/home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_ddc67.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_ddc67.dir/CheckSymbolExists.c.o   -c /home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_ddc67
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ddc67.dir/link.txt --verbose=1
+/usr/bin/cc      -rdynamic CMakeFiles/cmTC_ddc67.dir/CheckSymbolExists.c.o  -o cmTC_ddc67 
+CMakeFiles/cmTC_ddc67.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_ddc67.dir/build.make:97: recipe for target 'cmTC_ddc67' failed
+make[1]: *** [cmTC_ddc67] Error 1
+make[1]: Leaving directory '/home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_ddc67/fast' failed
+make: *** [cmTC_ddc67/fast] Error 2
+
+File /home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Determining if the function pthread_create exists in the pthreads failed with the following output:
+Change Dir: /home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_868bf/fast"
+/usr/bin/make -f CMakeFiles/cmTC_868bf.dir/build.make CMakeFiles/cmTC_868bf.dir/build
+make[1]: Entering directory '/home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_868bf.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_868bf.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.10/Modules/CheckFunctionExists.c
+Linking C executable cmTC_868bf
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_868bf.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create    -rdynamic CMakeFiles/cmTC_868bf.dir/CheckFunctionExists.c.o  -o cmTC_868bf -lpthreads 
+/usr/bin/ld: cannot find -lpthreads
+collect2: error: ld returned 1 exit status
+CMakeFiles/cmTC_868bf.dir/build.make:97: recipe for target 'cmTC_868bf' failed
+make[1]: *** [cmTC_868bf] Error 1
+make[1]: Leaving directory '/home/parallels/simulation_ws/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_868bf/fast' failed
+make: *** [cmTC_868bf/fast] Error 2
+
+
