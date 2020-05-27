@@ -5,7 +5,7 @@
 //  Created by Luca on 26/05/2020.
 //  Copyright © 2020 Luca. All rights reserved.
 //
-
+#include <assert.h>
 #ifndef ultra_handler_class_hpp
 #define ultra_handler_class_hpp
 /*_____Defining position of every sensor________*/

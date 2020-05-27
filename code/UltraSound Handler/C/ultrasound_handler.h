@@ -6,7 +6,7 @@
 //  Copyright © 2020 Luca. All rights reserved.
 //
 
-
+#include "assert.h"
 #define Initializer 0b0000000000000000
 
 

@@ -15,30 +15,23 @@
 
 /* Setting Functions*/
 void setSensorLow(union UltraHandler *Handler, Ultrasounds* Sensor, const int Position){
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-    //        Future error handling
-        }else{
-            Handler->Status&=~(Sensor[Position].activated<<Position);
-            Sensor[Position].activated=0;
-        }
+    assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
+    Handler->Status&=~(Sensor[Position].activated<<Position);
+    Sensor[Position].activated=0;
 }
 
 void setSensorHigh(union UltraHandler* Handler, Ultrasounds* Sensor, const int Position){
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-        //        Future error handling
-    }else{
-        Sensor[Position].activated=1;
-        Handler->Status |= Sensor[Position].activated<<Position;
-    }
+    assert(Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15);
+    Sensor[Position].activated=1;
+    Handler->Status |= 1<<Position;
+    
 }
 
 
 void setDistance( Ultrasounds* Sensor, const int Position, const float Distance){
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-    //        Future error handling
-        }else{
-            Sensor[Position].distance=Distance;
-        }
+    assert(Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15);
+    Sensor[Position].distance=Distance;
+        
 }
 
 

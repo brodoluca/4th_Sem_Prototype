@@ -11,31 +11,23 @@
 
 /*_________SettingFunctions________________*/
 void HandlerC::setSensorLow(const int Position){
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-    //        Future error handling
-        }else{
+    assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
             //Sensor_[Position].activated=1;
-            flag_.Status &= ~(Sensor_[Position].activated<<Position);
-            Sensor_[Position].activated=0;
-        }
+    flag_.Status &= ~(1<<Position);
+    Sensor_[Position].activated=0;
 }
 void HandlerC::setSensorHigh(const int Position){
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-//        Future error handling
-    }else{
-        Sensor_[Position].activated=1;
-        flag_.Status= 1<<Position;
-    }
+    assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
+    Sensor_[Position].activated=1;
+    flag_.Status|= 1<<Position;
+    
 }
 
 
 void HandlerC::setDistance(const int Position, const float Distance){
     
-    if (Position== 6 || Position== 7 || Position== 14 || Position== 15 || Position>15){
-    //        Future error handling
-        }else{
-            Sensor_[Position].distance=Distance;
-        }
+    assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
+    Sensor_[Position].distance=Distance;
 }
 /*_________Get Functions________________*/
 int HandlerC::getSensor(const int Position){
