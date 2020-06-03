@@ -38,7 +38,7 @@ For Ros, you can just copy-paste the package on your workspace and run it.
 
 ## License
 
-We do not think that in the current situation the project, code in particular, is good enough to be used in a real situation. Please contact the owner of the repository if some parts of the code is going to be used.
+We do not think that in the current situation the project, code in particular, is good enough to be used in a real situation. Please contact the owner of the repository if some parts of the code are going to be used.
 
 ## General Information
 
