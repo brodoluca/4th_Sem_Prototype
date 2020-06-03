@@ -43,8 +43,8 @@ We do not think that in the current situation the project, code in particular, i
 ## General Information
 
 
+Folder hierarchy:
 
-* Folder hierarchy:
       -master
           --code
           --documentation
