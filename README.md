@@ -1,6 +1,6 @@
 # 4th Semester Prototype
 Directory for the project developed by Group 1. Other information can be found in one of the following link :
-[Trello](https://trello.com/b/kLbxPnjT/floatycar)
+[Trello](https://trello.com/b/kLbxPnjT/floatycar) [Google Slide](https://docs.google.com/presentation/d/1wOSUW8fcxm8XULRU-msCCsydfiLDzpCgxqQR87jBXo8/edit#slide=id.g8823499ab8_0_17)
 
 Team members:
 
