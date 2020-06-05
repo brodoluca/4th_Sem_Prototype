@@ -8,19 +8,6 @@
 #define RSPIN PD0			//RS Pin
 #define ENPIN PD1 			//E Pin
 
-
-void LCD_Init (void)
-{
-	LCD_DPin = 0xFF;		//Control LCD Pins (D4-D7)
-	_delay_ms(15);		//Wait before LCD activation
-	LCD_Action(0x02);	//4-Bit Control
-	LCD_Action(0x28);       //Control Matrix @ 4-Bit
-	LCD_Action(0x0c);       //Disable Cursor
-	LCD_Action(0x06);       //Move Cursor
-	LCD_Action(0x01);       //Clean LCD
-	_delay_ms(2);
-}
-
 void LCD_Action( unsigned char cmnd )
 {
 	LCD_Port = (LCD_Port & 0x0F) | (cmnd & 0xF0); //send high nibble
@@ -35,6 +22,20 @@ void LCD_Action( unsigned char cmnd )
 	LCD_Port &= ~ (1<<ENPIN); //en low
 	_delay_ms(2); //wait
 }
+
+void LCD_Init (void)
+{
+	LCD_DPin = 0xFF;		//Control LCD Pins (D4-D7)
+	_delay_ms(15);		//Wait before LCD activation
+	LCD_Action(0x02);	//4-Bit Control
+	LCD_Action(0x28);       //Control Matrix @ 4-Bit
+	LCD_Action(0x0c);       //Disable Cursor
+	LCD_Action(0x06);       //Move Cursor
+	LCD_Action(0x01);       //Clean LCD
+	_delay_ms(2);
+}
+
+
 
 void LCD_Clear()
 {

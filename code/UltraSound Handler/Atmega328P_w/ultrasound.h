@@ -46,12 +46,20 @@ enum bool{
 };
 
 /*___________________Type Declaration_____________*/
+typedef enum PinCh{
+	PinB = 1,
+	PinC = 2,
+	PinD = 3,
+}PinCh;
+
 typedef struct Ultrasounds {
     int  activated_ : 1;
     unsigned int distance_;
 	unsigned short echo_pin_;
 	unsigned short trig_pin_;
 	uint8_t *port_;
+	PinCh pinout_;
+
 } Ultrasounds;
 
 
@@ -65,13 +73,14 @@ typedef union UltraHandler{
 
 
 /*____________Initializer______________*/
-Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin, uint8_t *Port){
+Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin,uint8_t *Port, PinCh pin){
 	//assert(Sensor[Position].port_ != PORTA|| Sensor[Position].port_ !=PORTB|| Sensor[Position].port_ !=PORTC|| Sensor[Position].port_ !=PORTD );
 	Sensor[Position].trig_pin_	=	TrigPin;
 	Sensor[Position].echo_pin_	=	EchoPin;
 	Sensor[Position].distance_  =   false;
 	Sensor[Position].activated_ =	false;
-	Sensor[Position].port_ = PORTB;
+	Sensor[Position].port_ = Port;
+	Sensor[Position].pinout_ = pin;
 	return Sensor[Position];
 }
 
@@ -86,27 +95,49 @@ void setSensorLow(union UltraHandler *Handler, Ultrasounds* Sensor, const int Po
 
 void setSensorHigh(union UltraHandler* Handler, Ultrasounds* Sensor, const int Position){
     assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
-	
     Sensor[Position].activated_	= true;
     Handler->Status |= 1<<Position;
     
 }
 
 
-void setDistance( Ultrasounds* Sensor, const int Position, UltraHandler* Handler){
+void setDistance( Ultrasounds* Sensor, const int Position){
     assert(Position!= 6 || Position!= 7 || Position!= 14 || Position!= 15 || Position<15);
     hc_sr04_cnt = 0;
     // transmit at least 10 us trigger pulse to the HC-SR04 Trig Pin.
-    PORTB ^=  (1<<Sensor[Position].trig_pin_);
+    *Sensor[Position].port_ |=  (1<<Sensor[Position].trig_pin_);
     _delay_us( 10 );
-    PORTB &= ~(1<<Sensor[Position].trig_pin_);
-    while((PINB & (1 << Sensor[Position].echo_pin_)) != (1 << Sensor[Position].echo_pin_));
-    while((PINB & (1 << Sensor[Position].echo_pin_)) == (1 << Sensor[Position].echo_pin_)){
-	    hc_sr04_cnt++;
-	    _delay_us(1);
-    }
-    Sensor[Position].distance_= hc_sr04_cnt/3;
-        
+    *Sensor[Position].port_  &= ~(1<<Sensor[Position].trig_pin_);
+	switch(Sensor[Position].pinout_){
+		case PinB:
+						while((PINB  & (1 << Sensor[Position].echo_pin_)) != (1 << Sensor[Position].echo_pin_));
+						while((PINB & (1 << Sensor[Position].echo_pin_)) == (1 << Sensor[Position].echo_pin_)){
+								hc_sr04_cnt++;
+								_delay_us(1);
+						}
+						break;
+		case PinC:
+						while((PINC  & (1 << Sensor[Position].echo_pin_)) != (1 << Sensor[Position].echo_pin_));
+						while((PINC & (1 << Sensor[Position].echo_pin_)) == (1 << Sensor[Position].echo_pin_)){
+							hc_sr04_cnt++;
+							_delay_us(1);
+						}
+						break;
+		case PinD:
+						while((PINC  & (1 << Sensor[Position].echo_pin_)) != (1 << Sensor[Position].echo_pin_));
+						while((PINC & (1 << Sensor[Position].echo_pin_)) == (1 << Sensor[Position].echo_pin_)){
+							hc_sr04_cnt++;
+							_delay_us(1);
+						}
+						break;
+	}
+	
+	
+	
+	
+	
+    
+    Sensor[Position].distance_= hc_sr04_cnt/3;   
 }
 
 

@@ -41,16 +41,15 @@ int main(){
 	LCD_Init(); //Activate LCD
 	LCD_Print("ok");	//Begin writing at Line 1, Position 1
 	sei();	
-	UltraHandler Handler; 
 	Ultrasounds Sensors[1];
-	sensorInitializer(Sensors, 0, ultra_echo_pin, ultra_trig_pin,PORTB);
+	sensorInitializer(Sensors, 0, ultra_echo_pin, ultra_trig_pin,&PORTB,PinB);
 	while(1){
 			LCD_Clear();
 			char showruntime [16];
 			setDistance(Sensors,0);
 			itoa (Sensors[0].distance_,showruntime,10);
 			LCD_Action(0xC0);		//Go to Line 2, Position 1
-			LCD_Print("RUNTIME (s): ");
+			LCD_Print("Distance: ");
 			LCD_Print(showruntime);
 			_delay_ms(50);
 	}
