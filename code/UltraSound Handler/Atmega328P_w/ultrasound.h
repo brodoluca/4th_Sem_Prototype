@@ -1,8 +1,8 @@
 /*
- * IncFile1.h
+ * ultrasound.h
  *
  * Created: 05/06/2020 16:13:54
- *  Author: utente
+ *  Author:Luca Brodo
  */ 
 
 
@@ -59,6 +59,7 @@ typedef struct Ultrasounds {
 	unsigned short trig_pin_;
 	uint8_t *port_;
 	PinCh pinout_;
+	uint8_t *port_direction_;
 
 } Ultrasounds;
 
@@ -73,14 +74,19 @@ typedef union UltraHandler{
 
 
 /*____________Initializer______________*/
-Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin,uint8_t *Port, PinCh pin){
+Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin,uint8_t *Port, PinCh pin, uint8_t *PortD){
 	//assert(Sensor[Position].port_ != PORTA|| Sensor[Position].port_ !=PORTB|| Sensor[Position].port_ !=PORTC|| Sensor[Position].port_ !=PORTD );
-	Sensor[Position].trig_pin_	=	TrigPin;
+	Sensor[Position].trig_pin_	=	TrigPin;	
 	Sensor[Position].echo_pin_	=	EchoPin;
 	Sensor[Position].distance_  =   false;
 	Sensor[Position].activated_ =	false;
 	Sensor[Position].port_ = Port;
 	Sensor[Position].pinout_ = pin;
+	Sensor[Position].port_direction_ = PortD;
+	
+	*Sensor[Position].port_direction_|= (1<<Sensor[Position].trig_pin_);
+	*Sensor[Position].port_direction_ &= ~(1<<Sensor[Position].echo_pin_);
+	
 	return Sensor[Position];
 }
 
@@ -108,6 +114,8 @@ void setDistance( Ultrasounds* Sensor, const int Position){
     *Sensor[Position].port_ |=  (1<<Sensor[Position].trig_pin_);
     _delay_us( 10 );
     *Sensor[Position].port_  &= ~(1<<Sensor[Position].trig_pin_);
+	
+	
 	switch(Sensor[Position].pinout_){
 		case PinB:
 						while((PINB  & (1 << Sensor[Position].echo_pin_)) != (1 << Sensor[Position].echo_pin_));
@@ -132,11 +140,6 @@ void setDistance( Ultrasounds* Sensor, const int Position){
 						break;
 	}
 	
-	
-	
-	
-	
-    
     Sensor[Position].distance_= hc_sr04_cnt/3;   
 }
 

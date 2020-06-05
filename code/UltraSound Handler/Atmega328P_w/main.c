@@ -1,7 +1,3 @@
-/*
-4-Bit 16x2 LCD Example
-More information at www.aeq-web.com
-*/
 #define F_CPU 8000000UL
 #include <avr/io.h>
 #include <util/delay.h>
@@ -11,12 +7,14 @@ More information at www.aeq-web.com
 
 #include "lcd.h"
 #include "ultrasound.h"
-
+/*STARTING TESTING FUNCTIONS FOR IR COMMUNICATION*/
+/*
+	working on a ir beam light using the NEC protocol
+*/
 
 #define LED_ON PORTD |= (1<<PIND3)
 #define  LED_OFF PORTD &= ~(1<<PIND3)
 
-int runtime;			 //Timer for LCD
 
 void timer_frequency(uint8_t freq){
 	
@@ -33,16 +31,15 @@ void PWM_init(uint8_t freq){
 	OCR1B = (F_CPU/(freq*2*1000*1)-1)-(F_CPU/(freq*10*10*10*2*1)-1)*1/100;
 }
 
+/**/
+
 
 int main(){
-	DDRB = 0x04;
-	PORTB &= ~(1<<ultra_trig_pin);
-	//hc_sr04_meas();
 	LCD_Init(); //Activate LCD
 	LCD_Print("ok");	//Begin writing at Line 1, Position 1
 	sei();	
 	Ultrasounds Sensors[1];
-	sensorInitializer(Sensors, 0, ultra_echo_pin, ultra_trig_pin,&PORTB,PinB);
+	sensorInitializer(Sensors, 0, ultra_echo_pin, ultra_trig_pin,&PORTB,PinB, &DDRB);
 	while(1){
 			LCD_Clear();
 			char showruntime [16];
@@ -58,7 +55,6 @@ int main(){
 ISR(TIMER1_COMPB_vect){
 	LED_OFF;
 }
-
 
 
 ISR(TIMER1_COMPA_vect){
