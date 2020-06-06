@@ -5,8 +5,8 @@
 
 #define LCD_Port PORTD			//Define LCD Port (PORTA, PORTB, PORTC, PORTD)
 #define LCD_DPin  DDRD			//Define 4-Bit Pins (PD4-PD7 at PORT D)
-#define RSPIN PD0			//RS Pin
-#define ENPIN PD1 			//E Pin
+#define RSPIN PD2		//RS Pin
+#define ENPIN PD3 			//E Pin
 
 void LCD_Action( unsigned char cmnd )
 {
@@ -24,7 +24,7 @@ void LCD_Action( unsigned char cmnd )
 }
 
 void LCD_Init (void)
-{
+{	
 	LCD_DPin = 0xFF;		//Control LCD Pins (D4-D7)
 	_delay_ms(15);		//Wait before LCD activation
 	LCD_Action(0x02);	//4-Bit Control
