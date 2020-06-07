@@ -3,7 +3,7 @@
  *
  * Created: 06/06/2020 12:34:23
  *  Author: Luca Brodo
- */ 
+ */
 
 
 #ifndef LIGHTBEAMSENSOR_H_
@@ -28,7 +28,7 @@ typedef enum Position{
 
 /*_______________________ACTUAL STRUCT TO USE___________________*/
 typedef struct LightSensor{
-	int status_ ; //to simulate boolean, status will be either 1 or zero
+	int status_ : 1; //to simulate boolean, status will be either 1 or zero
 	Position position_;
 	uint8_t port_;
 	unsigned short pin_;
