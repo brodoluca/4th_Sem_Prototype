@@ -25,17 +25,16 @@ int main(){
 	LCD_Init(); //Activate LCD
 	LCD_Print("ok");	//Begin writing at Line 1, Position 1
 	
-	USART_Init(MYUBRR);
+	//USART_Init(MYUBRR);
 	sensorInitializer(Sensors, 0, ultra_echo_pin, ultra_trig_pin,&PORTB,PinB, &DDRB);
 	LightSensorInitializer(&light, &PORTD, PD0);
 	
 	while(1){
 			char showruntime [16];		
 			LCD_Clear();
-			   light.counter_=0;
-			   LCD_Print(light.buffer_);
+			LCD_Print(light.buffer_);
 			_delay_ms(12);
-			  setDistance(Sensors,0);
+			setDistance(Sensors,0);
 			itoa (Sensors[0].distance_,showruntime,10);
 			LCD_Action(0xC0);		//Go to Line 2, Position 1
 			LCD_Print("Distance: ");
@@ -64,13 +63,6 @@ void PWM_init(uint8_t freq){
 
 
 
-
-
-
-
-
-
-
 ISR(TIMER1_COMPB_vect){
 	
 }
@@ -85,5 +77,8 @@ ISR(USART_RX_vect)
 {
 	//defien temp value for storing received byte
 	//Store data to temp
+	if (light.counter_ == 15)
+		light.counter_=0;
 	light.buffer_[light.counter_++] = UDR0;
+	setPosition(&light);
 }

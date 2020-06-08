@@ -74,7 +74,7 @@ typedef union UltraHandler{
 
 
 /*____________Initializer______________*/
-Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin,uint8_t *Port, PinCh pin, uint8_t *PortD){
+Ultrasounds sensorInitializer(Ultrasounds* Sensor, const int Position, const int EchoPin, const int TrigPin,volatile uint8_t *Port, PinCh pin, uint8_t *PortD){
 	//assert(Sensor[Position].port_ != PORTA|| Sensor[Position].port_ !=PORTB|| Sensor[Position].port_ !=PORTC|| Sensor[Position].port_ !=PORTD );
 	Sensor[Position].trig_pin_	=	TrigPin;	
 	Sensor[Position].echo_pin_	=	EchoPin;

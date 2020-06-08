@@ -32,7 +32,7 @@ typedef struct LightSensor{
 	Position position_;
 	uint8_t port_;
 	unsigned short pin_;
-	unsigned char buffer_[15];
+	unsigned char buffer_[14];
 	unsigned int counter_ : 4;
 	unsigned int buffer_dimension_ :4;
 } LightSensor;
@@ -49,11 +49,8 @@ void LightSensorInitializer(LightSensor* LightSensor, uint8_t *Port, unsigned sh
 	LightSensor->port_ = Port;
 	LightSensor->counter_ = 0;
 	LightSensor->buffer_dimension_=15;
+	USART_Init(MYUBRR);
 }
-
-
-
-
 
 
 
@@ -98,8 +95,8 @@ void setLow(LightSensor* LightSensor){
 }
 
 
-void setPosition(LightSensor* LightSensor,Position Position){
-	LightSensor->position_=Position;
+void setPosition(LightSensor* LightSensor){
+	LightSensor->position_=LightSensor->buffer_[LightSensor->counter_];
 }
 
 /*____________________Get functions_______________________________*/
