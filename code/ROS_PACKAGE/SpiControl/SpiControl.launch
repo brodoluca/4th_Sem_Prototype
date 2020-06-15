@@ -1,4 +1,0 @@
-<launch>
-    <node name="SPIconn" pkg="SpiControl" type="SPIconn"/>
-</launch>
-
