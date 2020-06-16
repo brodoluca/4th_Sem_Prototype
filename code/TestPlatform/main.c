@@ -36,7 +36,9 @@ void str();
 void back();
 void obstacle();
 Motor *bm;
+Motor *fm;
 backMotor *backM;
+frontMotor *frontM;
 
 int main(){
 	DDRC = 0x3E;
@@ -55,8 +57,11 @@ int main(){
    TCCR2B |= (1 << CS21);
    // set prescaler to 8 and starts PWM
 	
-	bm->initialize(bm, 2, 3, 1);
-	backM->init(backM, bm);
+	
+	initialize(fm, 4, 5, NO);
+	initialize(bm, 2, 3, 1);
+	back_init(backM, bm);
+	front_init(frontM, fm);
 	
 	sei(); //attach interrupt	
 	LCD_Init(); //Activate LCD
@@ -85,9 +90,10 @@ int main(){
 			LCD_Print(showruntime);
 			if (Sensors[0].distance_<30){
 				//backM->forward(backM, 200);
-				
+				frontM->leftM(frontM);
 				forw();
 			}else{
+				frontM->rightM(frontM)
 				stope();
 				
 			}
@@ -173,7 +179,28 @@ light->counter_++;
 
 ISR(INT0_vect){
 	
+	unsigned int high_c=0;
+	light.counter_++;
+	 light.pulse_counter_ =0;
+	 while (IRpin_PIN & (1 << IRpin)) {
+		 light.pulse_counter_++;
+		_delay_us(RESOLUTION);
+		 if (( light.pulse_counter_ >= MAXPULSE) && (light.counter_ != 0)) {		
+			 break;
+		 }
+	 }
+	  while (!(IRpin_PIN & _BV(IRpin))){
+		 high_c++;
+		_delay_us(RESOLUTION);
+		 if (( high_c >= MAXPULSE) && (high_c != 0)) {		
+			 break;
+		 }
+	 }
 	
+	 if ((light.pulse_counter_+ high_c)>144)
+		light.buffer_[light.counter_] = light.pulse_counter_+ high_c;
+	printC('f');
+	 high_c=0;
 }
 
 
