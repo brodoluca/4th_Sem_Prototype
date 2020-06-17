@@ -17,11 +17,11 @@
 
 /*__________________Housholding typedef Declaration______________ */
 typedef enum Position{
-	NORTH = 140,
-	EAST = 150,
-	SOUTH = 160,
-	WEST =170,
-	EMPTY
+	NORTH = 0,
+	EAST = 1,
+	SOUTH = 2,
+	WEST =3,
+	EMPTY = 4
 }Position;
 
 
@@ -108,8 +108,6 @@ void setLow(LightSensor* LightSensor){
 void setPosition(LightSensor* LightSensor){
 	LightSensor->position_=LightSensor->buffer_[LightSensor->counter_];
 }
-
-
 
 /*____________________Get functions_______________________________*/
 

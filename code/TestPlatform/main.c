@@ -13,7 +13,7 @@
 #define IRpin_PIN      PIND
 #define IRpin          2
 #define MAXPULSE 400
-#define RESOLUTION 1
+#define RESOLUTION 20
 
 unsigned char temp;
 
@@ -46,6 +46,9 @@ int main(){
 	EIMSK = 0b00000001;
 	EICRA = 0b00000001;
 
+	PCMSK1 |= (1<<PCINT8);
+	PCICR |= (1<<PCIE1);  
+		
 	 DDRB |= (1 << DDB3);
    // PB3 as output
    OCR2A = 128;
@@ -93,7 +96,7 @@ int main(){
 				frontM->leftM(frontM);
 				forw();
 			}else{
-				frontM->rightM(frontM)
+				frontM->rightM(frontM);
 				stope();
 				
 			}
@@ -160,15 +163,9 @@ light->counter_++;
 			 break;
 		 }
 	 }
-	  while (!(IRpin_PIN & _BV(IRpin))){
-		 high_c++;
-		_delay_us(RESOLUTION);
-		 if (( high_c >= MAXPULSE) && (high_c != 0)) {		
-			 break;
-		 }
-	 }
+	  
 	
-	 if ((light->pulse_counter_+ high_c)>144)
+	 if ((light->pulse_counter_+ high_c)!=144)
 		light->buffer_[light->counter_] = light->pulse_counter_+ high_c;
 	//printC('f');
 	 high_c=0;
@@ -178,7 +175,7 @@ light->counter_++;
 
 
 ISR(INT0_vect){
-	
+	char s[32];
 	unsigned int high_c=0;
 	light.counter_++;
 	 light.pulse_counter_ =0;
@@ -186,22 +183,21 @@ ISR(INT0_vect){
 		 light.pulse_counter_++;
 		_delay_us(RESOLUTION);
 		 if (( light.pulse_counter_ >= MAXPULSE) && (light.counter_ != 0)) {		
-			 break;
+			break;
 		 }
 	 }
-	  while (!(IRpin_PIN & _BV(IRpin))){
-		 high_c++;
-		_delay_us(RESOLUTION);
-		 if (( high_c >= MAXPULSE) && (high_c != 0)) {		
-			 break;
-		 }
-	 }
-	
-	 if ((light.pulse_counter_+ high_c)>144)
+	 	 if ((light.pulse_counter_+ high_c)!=144)
 		light.buffer_[light.counter_] = light.pulse_counter_+ high_c;
-	printC('f');
+	itoa(light.buffer_[light.counter_], s, 10);
+	LCD_Action (0x80);
+	LCD_Print(s);
 	 high_c=0;
 }
 
+
+ISR (PCINT8_vect)
+{
+	stope();
+}
 
 
