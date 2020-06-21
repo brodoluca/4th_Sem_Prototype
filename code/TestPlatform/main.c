@@ -175,23 +175,25 @@ light->counter_++;
 
 
 ISR(INT0_vect){
-	char s[32];
-	unsigned int high_c=0;
+
+	char s[32]; //utility array of char for printing on screen
+	//unsigned int high_c=0;
 	light.counter_++;
 	 light.pulse_counter_ =0;
-	 while (IRpin_PIN & (1 << IRpin)) {
-		 light.pulse_counter_++;
+	 while (IRpin_PIN & (1 << IRpin)) { //while the sensor is active
+		 light.pulse_counter_++; //count up the amount of time in u_s according to resolution
 		_delay_us(RESOLUTION);
-		 if (( light.pulse_counter_ >= MAXPULSE) && (light.counter_ != 0)) {		
+		 if (( light.pulse_counter_ >= MAXPULSE) && (light.counter_ != 0)) {	//in case they are more than max value	
 			break;
 		 }
 	 }
-	 	 if ((light.pulse_counter_+ high_c)!=144)
-		light.buffer_[light.counter_] = light.pulse_counter_+ high_c;
+	 
+	 //	if ((light.pulse_counter_)!=144)
+		//light.buffer_[light.counter_] = light.pulse_counter_;
 	itoa(light.buffer_[light.counter_], s, 10);
+
 	LCD_Action (0x80);
 	LCD_Print(s);
-	 high_c=0;
 }
 
 

@@ -32,7 +32,7 @@ typedef struct LightSensor{
 	Position position_;
 	uint8_t port_;
 	unsigned short pin_;
-	unsigned char buffer_[14];
+	unsigned char buffer_[14]; 
 	unsigned int counter_ : 4;
 	unsigned int buffer_dimension_ :4;
 	unsigned int pulse_counter_;
